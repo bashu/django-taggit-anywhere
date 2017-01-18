@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 
 ## Taggit Anywhere settings
 
-TAGS_FOR_MODELS = [
-    'django.contrib.flatpages.models.FlatPage',
+TAGGIT_FOR_MODELS = [
+    'flatpages.FlatPage',
 ]
 

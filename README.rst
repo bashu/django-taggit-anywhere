@@ -47,8 +47,8 @@ There is only one mandatory configuration option you need to set in your ``setti
 
 .. code-block:: python
 
-    TAGS_FOR_MODELS = [
-        '<app_name>.models.<ModelName>',
+    TAGGIT_FOR_MODELS = [
+        '<app_name>.<model_name>',
     ]
 
 

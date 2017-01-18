@@ -1,11 +1,12 @@
-from django import apps
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
+from django.apps import AppConfig
 from django.core.exceptions import ImproperlyConfigured
+from django.apps import apps
 
-from .importpath import importpath
-    
 
-class AppConfig(apps.AppConfig):
+class AppConfig(AppConfig):
     name = 'taggit_anywhere'
 
     def ready(self):
@@ -21,8 +22,8 @@ class AppConfig(apps.AppConfig):
             'fields': ('tags',),
         })
 
-        for model_name in getattr(settings, 'TAGS_FOR_MODELS', []):
-            model = importpath(model_name, 'TAGS_FOR_MODELS')
+        for value in getattr(settings, 'TAGGIT_FOR_MODELS', []):
+            model = apps.get_model(*value.rsplit('.', 1))
 
             model.add_to_class('tags', TaggableManager(blank=True))
 
@@ -38,4 +39,3 @@ class AppConfig(apps.AppConfig):
                 model_admin.fieldsets = list(model_admin.fieldsets)[:] + [FIELDSET_TAGS]
 
             admin.site.register(model, model_admin)
-
