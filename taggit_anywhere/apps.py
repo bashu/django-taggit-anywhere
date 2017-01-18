@@ -1,11 +1,12 @@
-from django import apps
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
+from django.apps import AppConfig
 from django.core.exceptions import ImproperlyConfigured
+from django.apps import apps
 
-from .importpath import importpath
-    
 
-class AppConfig(apps.AppConfig):
+class AppConfig(AppConfig):
     name = 'taggit_anywhere'
 
     def ready(self):
@@ -21,21 +22,36 @@ class AppConfig(apps.AppConfig):
             'fields': ('tags',),
         })
 
-        for model_name in getattr(settings, 'TAGS_FOR_MODELS', []):
-            model = importpath(model_name, 'TAGS_FOR_MODELS')
+        for value in getattr(settings, 'TAGGIT_FOR_MODELS', []):
+            Model = apps.get_model(*value.rsplit('.', 1))
 
-            model.add_to_class('tags', TaggableManager(blank=True))
+            Model.add_to_class('tags', TaggableManager(blank=True))
 
             try:
-                model_admin = admin.site._registry[model].__class__
+                ModelAdmin = admin.site._registry[Model].__class__
             except KeyError:
                 raise ImproperlyConfigured(
                     "Please put ``taggit_anywhere`` in your settings.py only as last INSTALLED_APPS")
-            admin.site.unregister(model)
+            admin.site.unregister(Model)
 
-            setattr(model_admin, 'fieldsets', getattr(model_admin, 'fieldsets', []))
-            if model_admin.fieldsets is not None:
-                model_admin.fieldsets = list(model_admin.fieldsets)[:] + [FIELDSET_TAGS]
+            setattr(ModelAdmin, 'fieldsets', getattr(ModelAdmin, 'fieldsets', []))
+            if ModelAdmin.fieldsets is not None:
+                ModelAdmin.fieldsets = list(ModelAdmin.fieldsets)[:] + [FIELDSET_TAGS]
 
-            admin.site.register(model, model_admin)
+            if 'taggit_helpers' in settings.INSTALLED_APPS:
+                from taggit_helpers.admin import TaggitListFilter
+                
+                class ModelAdmin(ModelAdmin):
+                    list_filter = list(ModelAdmin.list_filter)[:] + [TaggitListFilter]
 
+            if 'taggit_labels' in settings.INSTALLED_APPS:
+                from taggit.forms import TagField
+                from taggit_labels.widgets import LabelWidget
+
+                class ModelForm(ModelAdmin.form):
+                    tags = TagField(required=False, widget=LabelWidget)
+                
+                class ModelAdmin(ModelAdmin):
+                    form = ModelForm
+                    
+            admin.site.register(Model, ModelAdmin)

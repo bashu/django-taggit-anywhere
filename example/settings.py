@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'taggit',
+    'taggit_helpers',
+    'taggit_labels',
 ] + PROJECT_APPS
 
 MIDDLEWARE_CLASSES = [
@@ -126,7 +128,7 @@ STATIC_URL = '/static/'
 
 ## Taggit Anywhere settings
 
-TAGS_FOR_MODELS = [
-    'django.contrib.flatpages.models.FlatPage',
+TAGGIT_FOR_MODELS = [
+    'flatpages.FlatPage',
 ]
 
