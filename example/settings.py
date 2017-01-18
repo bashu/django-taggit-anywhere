@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'taggit',
+    'taggit_helpers',
 ] + PROJECT_APPS
 
 MIDDLEWARE_CLASSES = [
