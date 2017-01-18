@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     'taggit',
     'taggit_helpers',
+    'taggit_labels',
 ] + PROJECT_APPS
 
 MIDDLEWARE_CLASSES = [

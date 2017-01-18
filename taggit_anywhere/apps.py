@@ -44,4 +44,14 @@ class AppConfig(AppConfig):
                 class ModelAdmin(ModelAdmin):
                     list_filter = list(ModelAdmin.list_filter)[:] + [TaggitListFilter]
 
+            if 'taggit_labels' in settings.INSTALLED_APPS:
+                from taggit.forms import TagField
+                from taggit_labels.widgets import LabelWidget
+
+                class ModelForm(ModelAdmin.form):
+                    tags = TagField(required=False, widget=LabelWidget)
+                
+                class ModelAdmin(ModelAdmin):
+                    form = ModelForm
+                    
             admin.site.register(Model, ModelAdmin)
