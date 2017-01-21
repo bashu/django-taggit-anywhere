@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'taggit',
     'taggit_helpers',
     'taggit_labels',
+
+    # project tags...
+    'tags',
 ] + PROJECT_APPS
 
 MIDDLEWARE_CLASSES = [
@@ -130,5 +133,5 @@ STATIC_URL = '/static/'
 
 TAGGIT_FOR_MODELS = [
     'flatpages.FlatPage',
+    {'model': 'auth.User', 'attrname': 'skills', 'params': {'verbose_name': "Skills", 'through': 'tags.SkillTaggedItem'}},
 ]
-
