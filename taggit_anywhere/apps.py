@@ -18,14 +18,19 @@ class AppConfig(AppConfig):
         from django.conf import settings
         from taggit.managers import TaggableManager
     
-        FIELDSET_TAGS = (None, {
-            'fields': ('tags',),
-        })
-
         for value in getattr(settings, 'TAGGIT_FOR_MODELS', []):
-            Model = apps.get_model(*value.rsplit('.', 1))
+            if isinstance(value, dict):
+                value = value.copy()
+            else:
+                value = {'model': value, 'attrname': 'tags', 'params': {'through': None}}
 
-            Model.add_to_class('tags', TaggableManager(blank=True))
+            Model = apps.get_model(*value['model'].rsplit('.', 1))
+
+            Model.add_to_class(value['attrname'], TaggableManager(blank=True, **value['params']))
+
+            FIELDSET_TAGS = (None, {
+                'fields': (value['attrname'],),
+            })
 
             try:
                 ModelAdmin = admin.site._registry[Model].__class__
@@ -48,9 +53,16 @@ class AppConfig(AppConfig):
                 from taggit.forms import TagField
                 from taggit_labels.widgets import LabelWidget
 
+                if 'through' in value.get('params', {}) and value['params']['through']:
+                    class LabelWidget(LabelWidget):
+                        model = apps.get_model(*value['params']['through'].rsplit('.', 1)).tag_model()
+
                 class ModelForm(ModelAdmin.form):
-                    tags = TagField(required=False, widget=LabelWidget)
-                
+                    
+                    def __init__(self, *args, **kwargs):
+                        super(ModelForm, self).__init__(*args, **kwargs)
+                        self.fields[value['attrname']].widget = LabelWidget()
+                                
                 class ModelAdmin(ModelAdmin):
                     form = ModelForm
                     
