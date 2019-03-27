@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'taggit_labels',
 ] + PROJECT_APPS
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,6 +65,8 @@ MIDDLEWARE_CLASSES = [
 
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
+
+MIDDLEWARE_CLASSES = MIDDLEWARE
 
 ROOT_URLCONF = 'example.urls'
 
@@ -130,5 +132,4 @@ STATIC_URL = '/static/'
 
 TAGGIT_FOR_MODELS = [
     'flatpages.FlatPage',
-    'auth.User',
 ]

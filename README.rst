@@ -1,7 +1,9 @@
 django-taggit-anywhere
 ======================
 
-django-taggit_ with easy!
+Even more simpler approach to tagging with
+django-taggit_. Additionally this project provides easy-to-use
+integration with django-taggit-helpers_ and django-taggit-labels_
 
 .. image:: https://img.shields.io/pypi/v/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
@@ -11,9 +13,6 @@ django-taggit_ with easy!
 
 .. image:: https://img.shields.io/github/license/bashu/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
-
-.. image:: https://img.shields.io/travis/bashu/django-taggit-anywhere.svg
-    :target: https://travis-ci.org/bashu/django-taggit-anywhere/
 
 Requirements
 ------------
@@ -40,6 +39,12 @@ You'll need to add ``taggit_anywhere`` as a **LAST** item to ``INSTALLED_APPS`` 
 
     INSTALLED_APPS = (
         ...
+        # optional integration with django-taggit-helpers
+        'taggit_helpers',  # pip install django-taggit-helpers
+
+        # optional integration with django-taggit-labels
+        'taggit_labels',  # pip install django-taggit-labels
+
         'taggit_anywhere',  # must be last in a list
     )
 
@@ -63,3 +68,5 @@ If you like this module, forked it, or would like to improve it, please let us k
 Pull requests are welcome too. :-)
 
 .. _django-taggit: https://github.com/alex/django-taggit
+.. _django-taggit-helpers: https://github.com/mfcovington/django-taggit-helpers
+.. _django-taggit-labels: https://github.com/bennylope/django-taggit-labels

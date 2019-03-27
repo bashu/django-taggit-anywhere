@@ -1,0 +1,42 @@
+[
+{
+  "model": "taggit.tag",
+  "pk": 1,
+  "fields": {
+    "name": "Academic Assistance",
+    "slug": "academic-assistance"
+  }
+},
+{
+  "model": "taggit.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Basic Needs",
+    "slug": "basic-needs"
+  }
+},
+{
+  "model": "taggit.tag",
+  "pk": 3,
+  "fields": {
+    "name": "Behavioral Interventions",
+    "slug": "behavioral-interventions"
+  }
+},
+{
+  "model": "taggit.tag",
+  "pk": 4,
+  "fields": {
+    "name": "Family Engagement",
+    "slug": "family-engagement"
+  }
+},
+{
+  "model": "taggit.tag",
+  "pk": 5,
+  "fields": {
+    "name": "Life Skills",
+    "slug": "life-skills"
+  }
+}
+]
