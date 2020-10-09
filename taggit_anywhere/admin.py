@@ -4,43 +4,41 @@ from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
-
-for model_name in getattr(settings, 'TAGGIT_FOR_MODELS', []):
+for model_name in getattr(settings, "TAGGIT_FOR_MODELS", []):
     from django.contrib.admin.sites import site as default_site
 
-    model = apps.get_model(*model_name.rsplit('.', 1))
+    model = apps.get_model(*model_name.rsplit(".", 1))
 
     try:
         modeladmin = default_site._registry[model].__class__
     except KeyError:
-        raise ImproperlyConfigured(
-            "Please put ``taggit_anywhere`` in your settings.py only as last INSTALLED_APPS")
+        raise ImproperlyConfigured("Please put ``taggit_anywhere`` in your settings.py only as last INSTALLED_APPS")
 
     default_site.unregister(model)
-    
-    FIELDSET_TAGS = (None, {
-        'fields': (
-            'tags',
-        ),
-    })
+
+    FIELDSET_TAGS = (
+        None,
+        {
+            "fields": ("tags",),
+        },
+    )
 
     class TaggedAdmin(modeladmin):
-        fieldsets = getattr(modeladmin, 'fieldsets', [])
+        fieldsets = getattr(modeladmin, "fieldsets", [])
 
     if TaggedAdmin.fieldsets is not None:
         TaggedAdmin.fieldsets = list(TaggedAdmin.fieldsets)[:] + [FIELDSET_TAGS]
 
-    if 'taggit_helpers' in settings.INSTALLED_APPS:
+    if "taggit_helpers" in settings.INSTALLED_APPS:
         from taggit_helpers.admin import TaggitListFilter
-        
+
         TaggedAdmin.list_filter = list(TaggedAdmin.list_filter)[:] + [TaggitListFilter]
-                    
-    if 'taggit_labels' in settings.INSTALLED_APPS:
-        from taggit_labels.widgets import LabelWidget
+
+    if "taggit_labels" in settings.INSTALLED_APPS:
         from taggit.forms import TagField
+        from taggit_labels.widgets import LabelWidget
 
         class TaggedAdminForm(TaggedAdmin.form):
-
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 for f in self.fields:
