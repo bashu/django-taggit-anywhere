@@ -37,8 +37,7 @@ You'll need to add ``taggit_anywhere`` as a **LAST** item to ``INSTALLED_APPS`` 
 
 .. code-block:: python
 
-    INSTALLED_APPS = (
-        ...
+    INSTALLED_APPS += [
         # optional integration with django-taggit-helpers
         'taggit_helpers',  # pip install django-taggit-helpers
 
@@ -46,7 +45,7 @@ You'll need to add ``taggit_anywhere`` as a **LAST** item to ``INSTALLED_APPS`` 
         'taggit_labels',  # pip install django-taggit-labels
 
         'taggit_anywhere',  # must be last in a list
-    )
+    ]
 
 There is only one mandatory configuration option you need to set in your ``settings.py``:
 
