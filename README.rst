@@ -1,10 +1,6 @@
 django-taggit-anywhere
 ======================
 
-Even more simpler approach to tagging with
-django-taggit_. Additionally this project provides easy-to-use
-integration with django-taggit-helpers_ and django-taggit-labels_
-
 .. image:: https://img.shields.io/pypi/v/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
 
@@ -14,8 +10,12 @@ integration with django-taggit-helpers_ and django-taggit-labels_
 .. image:: https://img.shields.io/github/license/bashu/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
 
+Even more simpler approach to tagging with
+django-taggit_. Additionally this project provides easy-to-use
+integration with django-taggit-helpers_ and django-taggit-labels_
+
 Requirements
-------------
+~~~~~~~~~~~~
 
 You must have *django-taggit* installed and configured, see the django-taggit_ documentation for details and setup instructions.
 
@@ -62,7 +62,7 @@ Please see ``example`` application. This application is used to manually test th
 You need Django 1.8 or above to run that. It might run on older versions but that is not tested.
 
 Contributing
-------------
+============
 
 If you like this module, forked it, or would like to improve it, please let us know!
 Pull requests are welcome too. :-)
