@@ -1,10 +1,6 @@
 django-taggit-anywhere
 ======================
 
-Even more simpler approach to tagging with
-django-taggit_. Additionally this project provides easy-to-use
-integration with django-taggit-helpers_ and django-taggit-labels_
-
 .. image:: https://img.shields.io/pypi/v/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
 
@@ -14,13 +10,12 @@ integration with django-taggit-helpers_ and django-taggit-labels_
 .. image:: https://img.shields.io/github/license/bashu/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
 
-Requirements
-------------
-
-You must have *django-taggit* installed and configured, see the django-taggit_ documentation for details and setup instructions.
+Even more simpler approach to tagging with
+django-taggit_. Additionally this project provides easy-to-use
+integration with django-taggit-helpers_ and django-taggit-labels_
 
 Installation
-============
+------------
 
 First install the module, preferably in a virtual environment. It can be installed from PyPI:
 
@@ -28,8 +23,13 @@ First install the module, preferably in a virtual environment. It can be install
 
     pip install django-taggit-anywhere
 
+Requirements
+~~~~~~~~~~~~
+
+You must have *django-taggit* installed and configured, see the django-taggit_ documentation for details and setup instructions.
+
 Setup
-=====
+-----
 
 Make sure the project is configured for django-taggit_.
 
@@ -37,8 +37,7 @@ You'll need to add ``taggit_anywhere`` as a **LAST** item to ``INSTALLED_APPS`` 
 
 .. code-block:: python
 
-    INSTALLED_APPS = (
-        ...
+    INSTALLED_APPS += [
         # optional integration with django-taggit-helpers
         'taggit_helpers',  # pip install django-taggit-helpers
 
@@ -46,7 +45,7 @@ You'll need to add ``taggit_anywhere`` as a **LAST** item to ``INSTALLED_APPS`` 
         'taggit_labels',  # pip install django-taggit-labels
 
         'taggit_anywhere',  # must be last in a list
-    )
+    ]
 
 There is only one mandatory configuration option you need to set in your ``settings.py``:
 
@@ -66,6 +65,11 @@ Contributing
 
 If you like this module, forked it, or would like to improve it, please let us know!
 Pull requests are welcome too. :-)
+
+License
+-------
+
+``django-taggit-anywhere`` is released under the MIT license.
 
 .. _django-taggit: https://github.com/alex/django-taggit
 .. _django-taggit-helpers: https://github.com/mfcovington/django-taggit-helpers
