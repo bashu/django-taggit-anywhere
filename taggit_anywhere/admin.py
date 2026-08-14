@@ -7,10 +7,14 @@ for model_name in getattr(settings, "TAGGIT_FOR_MODELS", []):
 
     model = apps.get_model(*model_name.rsplit(".", 1))
 
-    try:
-        modeladmin = default_site._registry[model].__class__
-    except KeyError:
-        raise ImproperlyConfigured("Please put ``taggit_anywhere`` in your settings.py only as last INSTALLED_APPS")
+    if not default_site.is_registered(model):
+        msg = (
+            "Please put ``taggit_anywhere`` in your settings.py only as last "
+            "INSTALLED_APPS"
+        )
+        raise ImproperlyConfigured(msg)
+
+    modeladmin = default_site._registry[model].__class__  # noqa: SLF001
 
     default_site.unregister(model)
 
@@ -25,12 +29,12 @@ for model_name in getattr(settings, "TAGGIT_FOR_MODELS", []):
         fieldsets = getattr(modeladmin, "fieldsets", [])
 
     if TaggedAdmin.fieldsets is not None:
-        TaggedAdmin.fieldsets = list(TaggedAdmin.fieldsets)[:] + [FIELDSET_TAGS]
+        TaggedAdmin.fieldsets = [*TaggedAdmin.fieldsets, FIELDSET_TAGS]
 
     if "taggit_helpers" in settings.INSTALLED_APPS:
         from taggit_helpers.admin import TaggitListFilter
 
-        TaggedAdmin.list_filter = list(TaggedAdmin.list_filter)[:] + [TaggitListFilter]
+        TaggedAdmin.list_filter = [*TaggedAdmin.list_filter, TaggitListFilter]
 
     if "taggit_labels" in settings.INSTALLED_APPS:
         from taggit.forms import TagField

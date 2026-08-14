@@ -1,0 +1,70 @@
+SECRET_KEY = "DUMMY_SECRET_KEY"  # noqa: S105
+
+# Application definition
+
+PROJECT_APPS = ["taggit_anywhere.tests", "taggit_anywhere"]
+
+INSTALLED_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.admin",
+    "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "django.contrib.flatpages",
+    "taggit",
+    "taggit_helpers",
+    "taggit_labels",
+    *PROJECT_APPS,
+]
+
+MIDDLEWARE = [
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
+]
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.request",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+ROOT_URLCONF = "taggit_anywhere.tests.urls"
+
+# Database
+# https://docs.djangoproject.com/en/stable/ref/settings/#databases
+
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/stable/howto/static-files/
+
+STATIC_URL = "/static/"
+
+# django.contrib.sites
+SITE_ID = 1
+
+# django-taggit-anywhere
+# ------------------------------------------------------------------------------
+TAGGIT_FOR_MODELS = [
+    "flatpages.FlatPage",
+]

@@ -1,14 +1,17 @@
 django-taggit-anywhere
 ======================
 
-.. image:: https://img.shields.io/pypi/v/django-taggit-anywhere.svg
+.. image:: https://badge.fury.io/py/django-taggit-anywhere.svg
+    :target: https://badge.fury.io/py/django-taggit-anywhere
+
+.. image:: https://img.shields.io/pypi/pyversions/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
 
-.. image:: https://img.shields.io/pypi/dm/django-taggit-anywhere.svg
+.. image:: https://img.shields.io/pypi/djversions/django-taggit-anywhere.svg
     :target: https://pypi.python.org/pypi/django-taggit-anywhere/
 
-.. image:: https://img.shields.io/github/license/bashu/django-taggit-anywhere.svg
-    :target: https://pypi.python.org/pypi/django-taggit-anywhere/
+.. image:: https://github.com/bashu/django-taggit-anywhere/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/bashu/django-taggit-anywhere/actions/workflows/test.yml
 
 Even more simpler approach to tagging with
 django-taggit_. Additionally this project provides easy-to-use
