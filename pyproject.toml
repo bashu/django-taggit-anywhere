@@ -4,7 +4,7 @@ requires = [ "setuptools>=61" ]
 
 [project]
 name = "django-taggit-anywhere"
-version = "1.0.0"
+version = "2.0.0"
 description = "Even more simple approach to tagging with django-taggit"
 license = "MIT"
 authors = [ { name = "Basil Shubin", email = "basil.shubin@gmail.com" } ]
