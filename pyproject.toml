@@ -31,7 +31,7 @@ classifiers = [
 ]
 dynamic = [ "readme" ]
 dependencies = [
-  "django>=5.2",
+  "django>=5.2.17",
   "django-taggit>=6.0.0",
 ]
 urls.download = "https://github.com/bashu/django-taggit-anywhere/zipball/master"
