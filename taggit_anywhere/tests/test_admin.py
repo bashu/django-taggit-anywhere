@@ -17,7 +17,7 @@ from taggit_labels.widgets import LabelWidget
 from taggit_anywhere import admin as taggit_anywhere_admin
 
 
-class AdminRegistrationTestCase(TestCase):
+class AdminRegistrationTest(TestCase):
     """taggit_anywhere.admin patches the already-registered ModelAdmin for
     every model in settings.TAGGIT_FOR_MODELS (FlatPage here), adding a
     "tags" fieldset, a tag list filter and (when taggit_labels is installed)
@@ -69,7 +69,7 @@ class AdminRegistrationTestCase(TestCase):
         assert not isinstance(form.fields["url"].widget, LabelWidget)
 
 
-class AdminIntegrationTestCase(TestCase):
+class AdminIntegrationTest(TestCase):
     """End-to-end smoke test that the patched admin actually renders and
     saves tags through the normal admin add view."""
 
@@ -105,7 +105,7 @@ class AdminIntegrationTestCase(TestCase):
         assert sorted(page.tags.names()) == ["bar", "foo"]
 
 
-class AdminImportGuardTestCase(TestCase):
+class AdminImportGuardTest(TestCase):
     """taggit_anywhere/admin.py runs its registration loop at import time,
     so it can only patch a ModelAdmin that some other app already
     registered -- that's why the docs say to list ``taggit_anywhere`` last.
