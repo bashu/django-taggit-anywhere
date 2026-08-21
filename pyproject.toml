@@ -43,7 +43,7 @@ dev = [
   "django-stubs[compatible-mypy]==6.0.9",
   "django-taggit-helpers==0.1.4",
   "django-taggit-labels==0.7.0",
-  "django-upgrade==1.31.1",
+  "django-upgrade==1.32.0",
   "djlint==1.44.2",
   "factory-boy==3.3.3",
   "mypy==2.3.1",
