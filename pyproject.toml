@@ -39,7 +39,7 @@ urls.homepage = "https://github.com/bashu/django-taggit-anywhere/"
 
 [dependency-groups]
 dev = [
-  "coverage==7.15.4",
+  "coverage==7.16.0",
   "django-stubs[compatible-mypy]==6.0.9",
   "django-taggit-helpers==0.1.4",
   "django-taggit-labels==0.7.0",
