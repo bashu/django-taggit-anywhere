@@ -44,14 +44,14 @@ dev = [
   "django-taggit-helpers==0.1.4",
   "django-taggit-labels==0.7.0",
   "django-upgrade==1.32.0",
-  "djlint==1.44.2",
+  "djlint==1.45.0",
   "factory-boy==3.3.3",
   "mypy==2.3.1",
   "pre-commit==4.6.2",
   "pytest==9.1.1",
   "pytest-django==4.14.0",
   "pytest-sugar==1.1.1",
-  "ruff==0.16.5",
+  "ruff==0.16.6",
   # undeclared runtime dependency of django-taggit-labels (it still does
   # `from django.utils import six` with a fallback to a bare `import six`)
   "six",
