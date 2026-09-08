@@ -185,6 +185,6 @@ ini_options.addopts = [ "--ds=taggit_anywhere.tests.settings", "--reuse-db", "--
 
 # ==== Coverage ====
 [tool.coverage]
+run.source = [ "taggit_anywhere" ]
 run.omit = [ "*/migrations/*", "*/tests/*" ]
 run.relative_files = true
-run.source = [ "taggit_anywhere" ]
