@@ -59,6 +59,7 @@ dev = [
 
 [tool.setuptools]
 packages.find.include = [ "taggit_anywhere*" ]
+packages.find.exclude = [ "taggit_anywhere.tests*" ]
 include-package-data = true
 package-data.taggit_anywhere = [ "locale/**/*.mo", "locale/**/*.po" ]
 dynamic.readme = { file = [ "README.rst", "CHANGES.rst" ], content-type = "text/x-rst" }
