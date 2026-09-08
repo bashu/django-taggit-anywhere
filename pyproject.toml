@@ -44,7 +44,7 @@ dev = [
   "django-taggit-helpers==0.1.4",
   "django-taggit-labels==0.7.0",
   "django-upgrade==1.32.0",
-  "djlint==1.45.0",
+  "djlint==1.45.2",
   "factory-boy==3.3.3",
   "mypy==2.3.1",
   "pre-commit==4.6.2",
