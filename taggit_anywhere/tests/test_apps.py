@@ -7,7 +7,7 @@ from taggit.managers import TaggableManager
 from taggit_anywhere.apps import AppConfig
 
 
-class AppConfigTestCase(TestCase):
+class AppConfigTest(TestCase):
     """taggit_anywhere.apps.AppConfig.ready() contributes a TaggableManager
     to every model listed in settings.TAGGIT_FOR_MODELS. It already ran once
     during Django startup for this test settings module (TAGGIT_FOR_MODELS =
