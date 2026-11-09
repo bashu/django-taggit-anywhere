@@ -17,6 +17,8 @@ Even more simpler approach to tagging with
 django-taggit_. Additionally this project provides easy-to-use
 integration with django-taggit-helpers_ and django-taggit-labels_
 
+Authored by `Basil Shubin <http://github.com/bashu>`_ (who is available for freelance/contract work), inspired by django-taggit-helpers_
+
 Installation
 ------------
 
