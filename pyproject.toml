@@ -1,12 +1,13 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = [ "setuptools>=61" ]
+build-backend = "hatchling.build"
+requires = [ "hatch-fancy-pypi-readme>=24.1", "hatchling>=1.27" ]
 
 [project]
 name = "django-taggit-anywhere"
-version = "2.1.0"
+version = "2.1.1"
 description = "Even more simple approach to tagging with django-taggit"
 license = "MIT"
+license-files = [ "LICENSE" ]
 authors = [ { name = "Basil Shubin", email = "basil.shubin@gmail.com" } ]
 requires-python = ">=3.11"
 classifiers = [
@@ -39,47 +40,25 @@ urls.homepage = "https://github.com/bashu/django-taggit-anywhere/"
 
 [dependency-groups]
 dev = [
-  "coverage==7.16.2",
-  "django-stubs[compatible-mypy]==6.1.2",
+  "coverage==7.17.2",
   "django-taggit-helpers==0.1.4",
   "django-taggit-labels==0.7.0",
   "django-upgrade==1.33.0",
-  "djlint==1.46.4",
-  "factory-boy==3.3.3",
-  "mypy==2.4.0",
-  "pre-commit==4.6.2",
-  "pytest==9.1.1",
+  "pre-commit==4.7.0",
+  "pytest==9.2.0",
   "pytest-django==4.14.0",
   "pytest-sugar==1.1.1",
-  "ruff==0.16.10",
+  "ruff==0.17.4",
   # undeclared runtime dependency of django-taggit-labels (it still does
   # `from django.utils import six` with a fallback to a bare `import six`)
   "six",
 ]
 
-[tool.setuptools]
-packages.find.include = [ "taggit_anywhere*" ]
-packages.find.exclude = [ "taggit_anywhere.tests*" ]
-include-package-data = true
-package-data.taggit_anywhere = [ "locale/**/*.mo", "locale/**/*.po" ]
-dynamic.readme = { file = [ "README.rst", "CHANGES.rst" ], content-type = "text/x-rst" }
-zip-safe = false
-
-# ==== djLint ====
-[tool.djlint]
-profile = "django"
-include = "H017,H035"
-indent = 2
-max_line_length = 119
-blank_line_after_tag = "load,extends"
-close_void_tags = true
-format_css = true
-format_js = true
-custom_blocks = "element,setvar,slot"
-# TODO: remove T002 when fixed https://github.com/djlint/djLint/issues/687
-ignore = "H006,H030,H031,T002"
-css.indent_size = 2
-js.indent_size = 2
+[tool.hatch]
+metadata.hooks.fancy-pypi-readme.content-type = "text/x-rst"
+metadata.hooks.fancy-pypi-readme.fragments = [ { path = "README.rst" }, { text = "\n" }, { path = "CHANGES.rst" } ]
+build.targets.wheel.packages = [ "src/taggit_anywhere" ]
+build.targets.sdist.only-include = [ "CHANGES.rst", "README.rst", "src/" ]
 
 # ==== ruff ====
 [tool.ruff]
@@ -155,36 +134,11 @@ lint.isort.sections.django = [ "django" ]
 [tool.pyproject-fmt]
 keep_full_version = true
 
-# ==== mypy ====
-[tool.mypy]
-ignore_missing_imports = true
-python_version = "3.15"
-check_untyped_defs = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-plugins = [
-  "mypy_django_plugin.main",
-]
-warn_unused_configs = true
-overrides = [
-  # Django migrations should not produce any errors:
-  { module = "*.migrations.*", ignore_errors = true },
-]
-
-[tool.django-stubs]
-django_settings_module = "taggit_anywhere.tests.settings"
-
-[tool.pytest]
-ini_options.minversion = "6.0"
-ini_options.python_files = [
-  "test_*.py",
-  "tests.py",
-]
 # ==== pytest ====
-ini_options.addopts = [ "--ds=taggit_anywhere.tests.settings", "--reuse-db", "--import-mode=importlib" ]
+[tool.pytest]
+ini_options.DJANGO_SETTINGS_MODULE = "tests.settings"
 
-# ==== Coverage ====
+# ==== coverage ====
 [tool.coverage]
 run.source = [ "taggit_anywhere" ]
-run.omit = [ "*/migrations/*", "*/tests/*" ]
 run.relative_files = true

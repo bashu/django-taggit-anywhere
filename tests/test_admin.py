@@ -1,15 +1,19 @@
 import importlib
+import re
+from collections.abc import Iterator
 from http import HTTPStatus
 
 from django.contrib.admin.sites import site as default_site
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.core.exceptions import ImproperlyConfigured
+from django.test import Client
 from django.test import RequestFactory
-from django.test import TestCase
 from django.urls import reverse
 
+import pytest
+from pytest_django.asserts import assertContains
 from taggit.forms import TagField
 from taggit_helpers.admin import TaggitListFilter
 from taggit_labels.widgets import LabelWidget
@@ -17,7 +21,13 @@ from taggit_labels.widgets import LabelWidget
 from taggit_anywhere import admin as taggit_anywhere_admin
 
 
-class AdminRegistrationTest(TestCase):
+@pytest.fixture
+def url_flatpage_add() -> str:
+    return reverse("admin:flatpages_flatpage_add")
+
+
+@pytest.mark.django_db
+class TestAdminRegistration:
     """taggit_anywhere.admin patches the already-registered ModelAdmin for
     every model in settings.TAGGIT_FOR_MODELS (FlatPage here), adding a
     "tags" fieldset, a tag list filter and (when taggit_labels is installed)
@@ -29,67 +39,71 @@ class AdminRegistrationTest(TestCase):
     assertions go through get_form() rather than instantiating .form directly.
     """
 
-    def setUp(self):
+    @pytest.fixture(autouse=True)
+    def setup(
+        self,
+        rf: RequestFactory,
+        admin_user: User,
+        url_flatpage_add: str,
+    ) -> None:
         self.model_admin = default_site._registry[FlatPage]  # noqa: SLF001
-        self.superuser = get_user_model().objects.create_superuser(
-            username="admin",
-            email="admin@example.com",
-            password="password",  # noqa: S106
-        )
-        request = RequestFactory().get("/admin/flatpages/flatpage/add/")
-        request.user = self.superuser
+        request = rf.get(url_flatpage_add)
+        request.user = admin_user
         self.form_class = self.model_admin.get_form(request)
 
-    def test_replaces_registration_with_a_subclass(self):
+    def test_replaces_registration_with_a_subclass(self) -> None:
         assert type(self.model_admin).__name__ == "TaggedAdmin"
         assert type(self.model_admin).__name__ != "FlatPageAdmin"
 
-    def test_adds_tags_fieldset(self):
+    def test_adds_tags_fieldset(self) -> None:
         fieldsets = self.model_admin.fieldsets
 
         assert fieldsets[-1] == (None, {"fields": ("tags",)})
         # the original FlatPageAdmin fieldsets are preserved ahead of it
         assert len(fieldsets) > 1
 
-    def test_adds_taggit_list_filter(self):
+    def test_adds_taggit_list_filter(self) -> None:
         assert TaggitListFilter in self.model_admin.list_filter
         # original list_filter entries are preserved
         assert "registration_required" in self.model_admin.list_filter
 
-    def test_tags_field_uses_label_widget(self):
+    def test_tags_field_uses_label_widget(self) -> None:
         form = self.form_class()
 
-        tag_fields = [f for f in form.fields.values() if isinstance(f, TagField)]
+        tag_fields = [
+            field for field in form.fields.values() if isinstance(field, TagField)
+        ]
         assert len(tag_fields) == 1
         assert isinstance(tag_fields[0].widget, LabelWidget)
 
-    def test_other_form_fields_keep_their_default_widget(self):
+    def test_other_form_fields_keep_their_default_widget(self) -> None:
         form = self.form_class()
 
         assert not isinstance(form.fields["url"].widget, LabelWidget)
 
 
-class AdminIntegrationTest(TestCase):
+@pytest.mark.django_db
+class TestAdminIntegration:
     """End-to-end smoke test that the patched admin actually renders and
     saves tags through the normal admin add view."""
 
-    def setUp(self):
-        self.superuser = get_user_model().objects.create_superuser(
-            username="admin",
-            email="admin@example.com",
-            password="password",  # noqa: S106
-        )
-        self.client.force_login(self.superuser)
-
-    def test_add_view_renders_tags_widget(self):
-        response = self.client.get(reverse("admin:flatpages_flatpage_add"))
+    def test_add_view_renders_tags_widget(
+        self,
+        admin_client: Client,
+        url_flatpage_add: str,
+    ) -> None:
+        response = admin_client.get(url_flatpage_add)
 
         assert response.status_code == HTTPStatus.OK
-        self.assertContains(response, "taggit-labels")
+        assertContains(response, "taggit-labels")
 
-    def test_add_view_saves_tags(self):
-        response = self.client.post(
-            reverse("admin:flatpages_flatpage_add"),
+    def test_add_view_saves_tags(
+        self,
+        admin_client: Client,
+        url_flatpage_add: str,
+    ) -> None:
+        response = admin_client.post(
+            url_flatpage_add,
             {
                 "url": "/about/",
                 "title": "About",
@@ -105,28 +119,33 @@ class AdminIntegrationTest(TestCase):
         assert sorted(page.tags.names()) == ["bar", "foo"]
 
 
-class AdminImportGuardTest(TestCase):
+class TestAdminImportGuard:
     """taggit_anywhere/admin.py runs its registration loop at import time,
     so it can only patch a ModelAdmin that some other app already
     registered -- that's why the docs say to list ``taggit_anywhere`` last.
     Reload the module with the target unregistered to exercise that guard.
     """
 
-    def tearDown(self):
-        # Whatever the reload attempt below left behind, put back a single,
+    @pytest.fixture(autouse=True)
+    def restore_registration(self) -> Iterator[None]:
+        yield
+
+        # Whatever the reload attempt left behind, put back a single,
         # freshly-wrapped registration so later tests see the same state
         # they would have without this test running at all.
         if FlatPage in default_site._registry:  # noqa: SLF001
             default_site.unregister(FlatPage)
+
         default_site.register(FlatPage, FlatPageAdmin)
         importlib.reload(taggit_anywhere_admin)
 
-    def test_raises_when_target_model_is_not_already_registered(self):
+    def test_raises_when_target_model_is_not_already_registered(self) -> None:
         default_site.unregister(FlatPage)
 
         message = (
             "Please put ``taggit_anywhere`` in your settings.py only as last "
             "INSTALLED_APPS"
         )
-        with self.assertRaisesMessage(ImproperlyConfigured, message):
+
+        with pytest.raises(ImproperlyConfigured, match=re.escape(message)):
             importlib.reload(taggit_anywhere_admin)

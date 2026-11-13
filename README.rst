@@ -17,6 +17,8 @@ Even more simpler approach to tagging with
 django-taggit_. Additionally this project provides easy-to-use
 integration with django-taggit-helpers_ and django-taggit-labels_
 
+Authored by `Basil Shubin <http://github.com/bashu>`_ (who is available for freelance/contract work), inspired by django-taggit-helpers_
+
 Installation
 ------------
 
@@ -57,11 +59,6 @@ There is only one mandatory configuration option you need to set in your ``setti
     TAGGIT_FOR_MODELS = [
         '<app_name>.<model_name>',
     ]
-
-
-Please see ``example`` application. This application is used to manually test the functionalities of this package. This also serves as good example...
-
-You need Django 1.8 or above to run that. It might run on older versions but that is not tested.
 
 Contributing
 ------------
