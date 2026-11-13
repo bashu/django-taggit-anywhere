@@ -4,7 +4,7 @@ requires = [ "hatch-fancy-pypi-readme>=24.1", "hatchling>=1.27" ]
 
 [project]
 name = "django-taggit-anywhere"
-version = "2.1.0"
+version = "2.1.1"
 description = "Even more simple approach to tagging with django-taggit"
 license = "MIT"
 license-files = [ "LICENSE" ]
