@@ -2,13 +2,12 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/bashu/django-taggit-anywhere/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                             |    Stmts |     Miss |    Cover |   Missing |
-|--------------------------------- | -------: | -------: | -------: | --------: |
-| taggit\_anywhere/\_\_init\_\_.py |        0 |        0 |     100% |           |
-| taggit\_anywhere/admin.py        |       32 |        0 |     100% |           |
-| taggit\_anywhere/apps.py         |       20 |        0 |     100% |           |
-| taggit\_anywhere/models.py       |        0 |        0 |     100% |           |
-| **TOTAL**                        |   **52** |    **0** | **100%** |           |
+| Name                                 |    Stmts |     Miss |    Cover |   Missing |
+|------------------------------------- | -------: | -------: | -------: | --------: |
+| src/taggit\_anywhere/\_\_init\_\_.py |        0 |        0 |     100% |           |
+| src/taggit\_anywhere/admin.py        |       32 |        0 |     100% |           |
+| src/taggit\_anywhere/apps.py         |       20 |        0 |     100% |           |
+| **TOTAL**                            |   **52** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge
