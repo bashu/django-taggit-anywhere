@@ -2,7 +2,7 @@ SECRET_KEY = "DUMMY_SECRET_KEY"  # noqa: S105
 
 # Application definition
 
-PROJECT_APPS = ["taggit_anywhere.tests", "taggit_anywhere"]
+PROJECT_APPS = ["tests", "taggit_anywhere"]
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -10,7 +10,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.admin",
-    "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.flatpages",
     "taggit",
@@ -36,17 +35,12 @@ TEMPLATES = [
     },
 ]
 
-ROOT_URLCONF = "taggit_anywhere.tests.urls"
+ROOT_URLCONF = "tests.urls"
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-STATIC_URL = "/static/"
 
 # django-taggit-anywhere
 # ------------------------------------------------------------------------------

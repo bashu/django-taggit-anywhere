@@ -1,13 +1,13 @@
 from django.apps import apps
 from django.contrib.flatpages.models import FlatPage
-from django.test import TestCase
 
+import pytest
 from taggit.managers import TaggableManager
 
 from taggit_anywhere.apps import AppConfig
 
 
-class AppConfigTest(TestCase):
+class TestAppConfig:
     """taggit_anywhere.apps.AppConfig.ready() contributes a TaggableManager
     to every model listed in settings.TAGGIT_FOR_MODELS. It already ran once
     during Django startup for this test settings module (TAGGIT_FOR_MODELS =
@@ -15,7 +15,7 @@ class AppConfigTest(TestCase):
     ready() being invoked again.
     """
 
-    def test_tags_manager_added_to_configured_model(self):
+    def test_tags_manager_added_to_configured_model(self) -> None:
         # FlatPage.tags (class-level attribute access) goes through
         # TaggableManager.__get__, which always returns a _TaggableManager
         # instance -- the field itself lives on _meta.
@@ -23,13 +23,14 @@ class AppConfigTest(TestCase):
 
         assert isinstance(field, TaggableManager)
 
-    def test_tagged_model_can_be_used(self):
+    @pytest.mark.django_db
+    def test_tagged_model_can_be_used(self) -> None:
         page = FlatPage.objects.create(url="/about/", title="About")
         page.tags.add("foo", "bar")
 
         assert sorted(page.tags.names()) == ["bar", "foo"]
 
-    def test_ready_is_idempotent_when_run_flag_is_set(self):
+    def test_ready_is_idempotent_when_run_flag_is_set(self) -> None:
         # has_run_ready is already True from startup; calling ready() again
         # must be a no-op rather than trying to contribute the field twice.
         app_config = apps.get_app_config("taggit_anywhere")
@@ -37,17 +38,16 @@ class AppConfigTest(TestCase):
         assert getattr(AppConfig, "has_run_ready", False)
         app_config.ready()  # would raise if it tried to re-add the field
 
-    def test_ready_skips_models_that_already_have_a_taggable_manager(self):
+    def test_ready_skips_models_that_already_have_a_taggable_manager(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
         # Simulate a fresh run (has_run_ready reset) to exercise the
         # "already tagged" branch instead of the early-return guard.
         field_before = FlatPage._meta.get_field("tags")  # noqa: SLF001
+        monkeypatch.setattr(AppConfig, "has_run_ready", False)
 
-        original = AppConfig.has_run_ready
-        AppConfig.has_run_ready = False
-        try:
-            apps.get_app_config("taggit_anywhere").ready()
-        finally:
-            AppConfig.has_run_ready = original
+        apps.get_app_config("taggit_anywhere").ready()
 
         # would be a different object (or raise) had it been re-contributed
         assert FlatPage._meta.get_field("tags") is field_before  # noqa: SLF001

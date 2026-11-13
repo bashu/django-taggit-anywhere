@@ -60,11 +60,6 @@ There is only one mandatory configuration option you need to set in your ``setti
         '<app_name>.<model_name>',
     ]
 
-
-Please see ``example`` application. This application is used to manually test the functionalities of this package. This also serves as good example...
-
-You need Django 1.8 or above to run that. It might run on older versions but that is not tested.
-
 Contributing
 ------------
 

@@ -1,5 +1,0 @@
-django
-django-taggit
-django-taggit-helpers
-django-taggit-labels
-six
