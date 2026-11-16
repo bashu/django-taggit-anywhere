@@ -40,7 +40,7 @@ urls.homepage = "https://github.com/bashu/django-taggit-anywhere/"
 
 [dependency-groups]
 dev = [
-  "coverage==7.17.2",
+  "coverage==7.17.3",
   "django-taggit-helpers==0.1.4",
   "django-taggit-labels==0.7.0",
   "django-upgrade==1.33.0",
@@ -48,7 +48,7 @@ dev = [
   "pytest==9.2.0",
   "pytest-django==4.14.0",
   "pytest-sugar==1.1.1",
-  "ruff==0.17.4",
+  "ruff==0.17.5",
   # undeclared runtime dependency of django-taggit-labels (it still does
   # `from django.utils import six` with a fallback to a bare `import six`)
   "six",
